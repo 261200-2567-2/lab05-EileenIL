@@ -29,16 +29,29 @@ public class RPGCharacter {
     public class Warrior implements Character {
         private String name;         // ชื่อของนักรบ
         private int baseAttack = 50; // พลังโจมตีพื้นฐาน
+        private int mana = 50;
         private int defense = 20;    // ค่าป้องกัน
         private int HP = 100;        // พลังชีวิต
         private int level = 1;       // เลเวลเริ่มต้น
         private Accessory accessory; // อุปกรณ์เสริม
 
 
+        public Warrior(String name) {
+            this.name = name; // กำหนดชื่อ
+        }
+
+
 
         @Override
         public int attack() {
-            return baseAttack;
+            // ตรวจสอบว่ามีมานาเพียงพอ
+            if (mana >= 10) {
+                mana -= 10; // ลดมานา 10 หน่วย
+                return baseAttack; // คืนค่าพลังโจมตี
+            } else {
+                System.out.println(name + " does not have enough mana to attack!");
+                return 0; // ถ้ามานาไม่พอ การโจมตีจะไม่สำเร็จ
+            }
         }
 
         @Override
@@ -55,6 +68,7 @@ public class RPGCharacter {
             level++;
             baseAttack += 10;
             defense += 5;
+            mana += 10;
             HP += 20;
         }
 
@@ -65,15 +79,22 @@ public class RPGCharacter {
 
         @Override
         public void takeDamage(int damage) {
-            int reducedDamage = Math.max(0, damage - defense);
-            HP -= reducedDamage;
-            if (HP < 0) HP = 0;
+            // คำนวณความเสียหายสุทธิ = ดาเมจที่ได้รับ - ค่าป้องกัน
+            int netDamage = Math.max(0, damage - defense);
+
+            // ลดค่าพลังชีวิตตามความเสียหายสุทธิ
+            HP -= netDamage;
+
+            // หากพลังชีวิตต่ำกว่า 0 ให้ตั้งค่าเป็น 0
+            if (HP < 0) {
+                HP = 0;
+            }
         }
 
         @Override
         public String getStats() {
             return name + " [Level: " + level + ", HP: " + HP + ", Attack: " + baseAttack +
-                    ", Defense: " + defense + (accessory != null ? ", Accessory: " + accessory.getName() : "") + "]";
+                    ", Defense: " + defense + ", Mana: " + mana+ (accessory != null ? ", Accessory: " + accessory.getName() : "") + "]";
         }
 
         @Override
@@ -87,6 +108,7 @@ public class RPGCharacter {
         private String name;
         private int baseAttack = 70; // พลังโจมตีพื้นฐาน
         private int mana = 100;      // มานาเริ่มต้น
+        private int defense = 20;
         private int HP = 80;         // พลังชีวิต
         private int level = 1;       // เลเวลเริ่มต้น
         private Accessory accessory; // อุปกรณ์เสริม
@@ -97,9 +119,15 @@ public class RPGCharacter {
 
         @Override
         public int attack() {
-            return baseAttack;
+            // ตรวจสอบว่ามีมานาเพียงพอ
+            if (mana >= 10) {
+                mana -= 10; // ลดมานา 10 หน่วย
+                return baseAttack; // คืนค่าพลังโจมตี
+            } else {
+                System.out.println(name + " does not have enough mana to attack!");
+                return 0; // ถ้ามานาไม่พอ การโจมตีจะไม่สำเร็จ
+            }
         }
-
         @Override
         public void equipAccessory(Accessory accessory) {
             this.accessory = accessory;
@@ -113,8 +141,10 @@ public class RPGCharacter {
         public void levelUp() {
             level++;
             baseAttack += 15;
+            defense += 5;
             mana += 30;
             HP += 15;
+
         }
 
         @Override
@@ -124,13 +154,22 @@ public class RPGCharacter {
 
         @Override
         public void takeDamage(int damage) {
-            HP -= damage;
-            if (HP < 0) HP = 0;
+            // คำนวณความเสียหายสุทธิ = ดาเมจที่ได้รับ - ค่าป้องกัน
+            int netDamage = Math.max(0, damage - defense);
+
+            // ลดค่าพลังชีวิตตามความเสียหายสุทธิ
+            HP -= netDamage;
+
+            // หากพลังชีวิตต่ำกว่า 0 ให้ตั้งค่าเป็น 0
+            if (HP < 0) {
+                HP = 0;
+            }
         }
+
 
         @Override
         public String getStats() {
-            return name + " [Level: " + level + ", HP: " + HP + ", Attack: " + baseAttack +
+            return name + " [Level: " + level + ", HP: " + HP + ", Attack: " + baseAttack +", Defense: " + defense+
                     ", Mana: " + mana + (accessory != null ? ", Accessory: " + accessory.getName() : "") + "]";
         }
 
@@ -142,7 +181,7 @@ public class RPGCharacter {
 
     // คลาส Shield (อุปกรณ์เสริมสำหรับ Warrior)
     public class Shield implements Accessory {
-        private final String name = "Shield";
+        private final String name = "Shield I";
 
         @Override
         public void applyEffect(Character character) {
@@ -159,7 +198,7 @@ public class RPGCharacter {
 
     // คลาส Magic Amulet (อุปกรณ์เสริมสำหรับ Mage)
     public class MagicAmulet implements Accessory {
-        private final String name = "Magic Amulet";
+        private final String name = "Magic Amulet IV";
 
         @Override
         public void applyEffect(Character character) {

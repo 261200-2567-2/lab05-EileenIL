@@ -2,9 +2,9 @@ public class lab05 {
 
     public static void main(String[] args) {
         // สร้างตัวละครและตั้งชื่อ
-        RPGCharacter.Character warrior1 = new RPGCharacter().new Warrior();
+        RPGCharacter.Character warrior1 = new RPGCharacter().new Warrior("Lin");
         RPGCharacter.Character mage = new RPGCharacter().new Mage("Gandalf");
-        RPGCharacter.Character warrior2 = new RPGCharacter().new Warrior();
+        RPGCharacter.Character warrior2 = new RPGCharacter().new Warrior("Lulu");
 
 
         // สร้างอุปกรณ์เสริม
@@ -36,10 +36,11 @@ public class lab05 {
         System.out.println("Mage ยังมีชีวิตอยู่หรือไม่: " + mage.isAlive());
 
         // เปลี่ยนชื่อให้กับตัวละคร
-        warrior2.setName("Legolas");  // เปลี่ยนชื่อของ warrior เป็น "Legolas"
+        warrior2.setName("Legolas");  // เปลี่ยนชื่อของ warrior2 เป็น "Legolas"
         System.out.println("หลังจากเปลี่ยนชื่อ:");
         System.out.println(warrior2.getStats());
-        warrior1.setName("Butterfly");
+
+        //เพิ่มเลเวล
         warrior1.levelUp();
         System.out.println(warrior1.getStats());
     }
